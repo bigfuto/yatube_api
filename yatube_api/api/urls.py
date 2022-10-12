@@ -10,20 +10,20 @@ from .views import PostViewSet, GroupViewSet, CommentViewSet, FollowViewSet
 
 app_name = 'api'
 
-router = DefaultRouter()
+router_v1 = DefaultRouter()
 
-router.register('posts', PostViewSet)
-router.register('groups', GroupViewSet)
-router.register('follow', FollowViewSet, basename='follow')
-router.register(
-    r'posts/(?P<post_id>[^/.]+)/comments',
+router_v1.register('posts', PostViewSet)
+router_v1.register('groups', GroupViewSet)
+router_v1.register('follow', FollowViewSet, basename='follow')
+router_v1.register(
+    r'posts/(?P<post_id>\d+)/comments',
     CommentViewSet,
     basename='comments'
 )
 
 urlpatterns = [
-    path('', include('djoser.urls.jwt')),
-    path('', include(router.urls)),
+    path('v1/', include('djoser.urls.jwt')),
+    path('v1/', include(router_v1.urls)),
 ]
 
 
@@ -40,6 +40,6 @@ schema_view = get_schema_view(
 )
 
 urlpatterns += [
-    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
+    url(r'^v1/redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'),
 ]

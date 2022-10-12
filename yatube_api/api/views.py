@@ -4,7 +4,6 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly, IsAuthenticated
 )
 from rest_framework.pagination import LimitOffsetPagination
-from django.core.exceptions import SuspiciousOperation
 
 from posts.models import Post, Group, Follow
 from .serializers import (
@@ -62,15 +61,4 @@ class FollowViewSet(FollowMixViewSet):
         return new_queryset
 
     def perform_create(self, serializer):
-        follower = serializer.validated_data['following']
-        if follower == self.request.user:
-            raise SuspiciousOperation('Подписываться на себя запрещено!')
-        if self.request.user.follower.filter(
-            following__username=follower
-        ).exists():
-            raise SuspiciousOperation(
-                'Вы уже подписаны на этого пользователя!'
-            )
-        serializer.save(
-            user=self.request.user
-        )
+        serializer.save(user=self.request.user)
