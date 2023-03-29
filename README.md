@@ -23,6 +23,8 @@ Django REST Framework 3.12
 Djoser 2.1
 Simple-JWT 4.7
 Drf-yasg 1.21
+ReDoc
+Swagger
 ```
 
 ---
